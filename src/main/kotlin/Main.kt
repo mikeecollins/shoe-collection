@@ -1,7 +1,12 @@
+import controllers.ShoeAPI
+import models.Shoe
 import utils.ScannerInput
+import utils.ScannerInput.readNextDouble
+import utils.ScannerInput.readNextInt
+import utils.ScannerInput.readNextLine
 import java.lang.System.exit
 
-
+private val shoeAPI = ShoeAPI()
 
 fun main(args: Array<String>) {
     runMenu()
@@ -27,6 +32,25 @@ fun mainMenu() : Int {
          > ----------------------------------
          > ==>> """.trimMargin(">"))
 
+}
+
+fun addShoe(){
+    val shoeName = readNextLine("Enter a title for the note: ")
+    val shoeSize = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
+    val shoeDescription = readNextLine("Enter a category for the note: ")
+    val shoePrice = readNextDouble("Enter the Prie of the Shoe")
+    val shoeType = readNextLine("What Shoe type would you like")
+    val isAdded = shoeAPI.add(Shoe(shoeName,shoeSize , shoeDescription,shoePrice,shoeType, false))
+
+    if (isAdded) {
+        println("Added Successfully")
+    } else {
+        println("Add Failed")
+    }
+
+    fun listShoes(){
+        println(shoeAPI.listAllShoes())
+    }
 }
 
 fun runMenu() {
