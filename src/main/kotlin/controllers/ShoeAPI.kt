@@ -21,5 +21,22 @@ class ShoeAPI {
             }
             listOfShoes
         }
+
+
+    }
+
+    fun numberOfShoes(): Int {
+        return shoes.size
+    }
+
+    fun findShoe(index: Int): Shoe? {
+        return if (isValidListIndex(index, shoes)) {
+            shoes[index]
+        } else null
+    }
+
+    //utility method to determine if an index is valid in a list.
+    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+        return (index >= 0 && index < list.size)
     }
 }
