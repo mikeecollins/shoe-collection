@@ -4,6 +4,7 @@ import models.Shoe
 
 class ShoeAPI {
 
+
     private var shoes = ArrayList<Shoe>()
 
 
@@ -11,9 +12,20 @@ class ShoeAPI {
         return shoes.add(shoe)
     }
 
+    fun isValidIndex(index:Int):Boolean{
+        return index >=0 &&index <shoes.size
+    }
+
+    fun deleteShoe(indexToDelete: Int): Shoe? {
+        return if (isValidListIndex(indexToDelete, shoes)) {
+            shoes.removeAt(indexToDelete)
+        } else null
+    }
+
+
     fun listAllShoes(): String {
         return if (shoes.isEmpty()) {
-            "No Shoes Foumd"
+            "No Shoes Found"
         } else {
             var listOfShoes = ""
             for (i in shoes.indices) {
@@ -39,4 +51,72 @@ class ShoeAPI {
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
+
+    fun listActiveShoes(): String {
+        return if (numberOfActiveShoes() == 0) {
+            "No active notes stored"
+        } else {
+            var listOfActiveShoes = ""
+            for (shoe in shoes) {
+                if (!shoe.inCurrentProductLine) {
+                    listOfActiveShoes += "${shoes.indexOf(shoe)}: $shoe \n"
+                }
+            }
+            listOfActiveShoes
+        }
+    }
+
+    fun listArchivedShoes(): String {
+        return if (numberOfArchivedShoes() == 0) {
+            "No archived notes stored"
+        } else {
+            var listOfArchivedShoes = ""
+            for (shoe in shoes) {
+                if (shoe.inCurrentProductLine) {
+                    listOfArchivedShoes += "${shoes.indexOf(shoe)}: $shoe \n"
+                }
+            }
+            listOfArchivedShoes
+        }
+
+
+
+
+    }
+
+    fun numberOfArchivedShoes(): Int {
+        //return notes.stream().filter { obj: Note -> obj.isNoteArchived }.count().toInt()
+        var counter = 0
+        for (shoe in shoes) {
+            if (shoe.inCurrentProductLine) {
+                counter++
+            }
+        }
+        return counter
+    }
+
+    fun archiveShoe(indexToArchive: Int): Boolean {
+        if (isValidIndex(indexToArchive)) {
+            val shoeToArchive = shoes[indexToArchive]
+            if (!shoeToArchive.inCurrentProductLine) {
+                shoeToArchive.inCurrentProductLine = true
+                return true
+            }
+        }
+        return false
+    }
+
+
+    fun numberOfActiveShoes(): Int {
+        //return notes.stream().filter { p: Note -> !p.isNoteArchived }.count().toInt()
+        var counter = 0
+        for (shoe in shoes) {
+            if (!shoe.inCurrentProductLine) {
+                counter++
+            }
+        }
+        return counter
+    }
+
 }
