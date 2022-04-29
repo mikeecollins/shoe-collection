@@ -19,14 +19,15 @@ fun mainMenu() : Int {
          > |        KICKS MENU              |
          > ----------------------------------
          > | KICKS MENU                     |
-         > |   1) Enter Shoe Size           |
-         > |   2) Enter Shoe type           |
-         > |   3) Enter Shoe price          |
-         > |   4) Enter Shoe Name           |
-         > |   5) Enter Shoe Description    |
-         > |   6) List All Shoes            |
-         > |   7) Enter Product line        |
-         > |   8) Delete a Shoe             |
+         >     1) Add Shoe                  |
+         > |   2) List all shoes            |
+         > |   3) Delete Shoe               |
+         > |                                |
+         > |                                |
+         > |                                |
+         > |                                |
+         > |                                |
+         > |                                |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
@@ -35,10 +36,10 @@ fun mainMenu() : Int {
 }
 
 fun addShoe(){
-    val shoeName = readNextLine("Enter a title for the note: ")
-    val shoeSize = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
-    val shoeDescription = readNextLine("Enter a category for the note: ")
-    val shoePrice = readNextDouble("Enter the Prie of the Shoe")
+    val shoeName = readNextLine("Enter the shoe you would like to add: ")
+    val shoeSize = readNextInt("Enter the size of the shoe ")
+    val shoeDescription = readNextLine("What is this Shoe for ")
+    val shoePrice = readNextDouble("Enter the Price of the Shoe")
     val shoeType = readNextLine("What Shoe type would you like")
     val isAdded = shoeAPI.add(Shoe(shoeName,shoeSize , shoeDescription,shoePrice,shoeType, false))
 
@@ -48,57 +49,29 @@ fun addShoe(){
         println("Add Failed")
     }
 
-    fun listShoes(){
-        println(shoeAPI.listAllShoes())
-    }
+
 }
 
 fun runMenu() {
     do {
         val option = mainMenu()
         when (option) {
-            1  -> shoeSize()
-            2  -> shoeType()
-            3  -> shoePrice()
-            4  -> shoeName()
-            5  -> shoeDescription()
-            6  -> listShoe()
-            7  -> deleteShoe()
-            8  -> inCurrentProductLine()
+            1  -> addShoe()
+            2 ->  listShoe()
+            3  -> deleteShoe()
             0  -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
 
 }
-fun shoeSize(){
-    println("You chose Shoe Size")
-}
 
-fun shoeType(){
-    println("You chose Shoe type")
-}
-
-fun shoePrice(){
-    println("You chose Shoe Price")
-}
-
-fun shoeName(){
-    println("You chose Shoe Name")
-}
-
-
-fun shoeDescription(){
-    println("You chose Shoe Description")
-}
 
 fun listShoe(){
-    println("You chose List Shoe")
+    println(shoeAPI.listAllShoes())
 }
 
-fun inCurrentProductLine(){
-    println("You chose Shoe type")
-}
+
 
 fun deleteShoe(){
     println("You chose Delete Shoe")
