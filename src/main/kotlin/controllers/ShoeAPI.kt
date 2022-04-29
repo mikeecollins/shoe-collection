@@ -55,7 +55,7 @@ class ShoeAPI {
 
     fun listActiveShoes(): String {
         return if (numberOfActiveShoes() == 0) {
-            "No active notes stored"
+            "No active shoes stored"
         } else {
             var listOfActiveShoes = ""
             for (shoe in shoes) {
@@ -69,7 +69,7 @@ class ShoeAPI {
 
     fun listArchivedShoes(): String {
         return if (numberOfArchivedShoes() == 0) {
-            "No archived notes stored"
+            "No archived shoes stored"
         } else {
             var listOfArchivedShoes = ""
             for (shoe in shoes) {
@@ -113,6 +113,36 @@ class ShoeAPI {
         var counter = 0
         for (shoe in shoes) {
             if (!shoe.inCurrentProductLine) {
+                counter++
+            }
+        }
+        return counter
+    }
+
+    fun listShoesBySelectedPriority(priority: Int): String {
+        return if (shoes.isEmpty()) {
+            "No shoes stored"
+        } else {
+            var listOfShoes = ""
+            for (i in shoes.indices) {
+                if (shoes[i].shoeSize == priority) {
+                    listOfShoes +=
+                        """$i: ${shoes[i]}
+                        """.trimIndent()
+                }
+            }
+            if (listOfShoes.equals("")) {
+                "No shoes with priority: $priority"
+            } else {
+                "${numberOfShoesByPriority(priority)} shoes with priority $priority: $listOfShoes"
+            }
+        }
+    }
+
+    fun numberOfShoesByPriority(priority: Int): Int {
+        var counter = 0
+        for (shoe in shoes) {
+            if (shoe.shoeSize == priority) {
                 counter++
             }
         }
