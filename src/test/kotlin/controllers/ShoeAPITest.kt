@@ -88,13 +88,15 @@ class ShoeAPITest {
                 assertTrue(shoesString.contains("Black AF1"))
             }
         }
+
         @Test
         fun `listActiveShoes returns no active shoes stored when ArrayList is empty`() {
             assertEquals(0, emptyShoes!!.numberOfActiveShoes())
-            assertFalse(
+            assertTrue(
                 emptyShoes!!.listActiveShoes().lowercase().contains("no active shoes")
             )
         }
+
         @Test
         fun `listActiveShoes returns active shoes when ArrayList has active shoes stored`() {
             assertEquals(3, populatedShoes!!.numberOfActiveShoes())
@@ -110,7 +112,7 @@ class ShoeAPITest {
     @Test
     fun `listArchivedShoes returns no archived shoes when ArrayList is empty`() {
         assertEquals(0, emptyShoes!!.numberOfArchivedShoes())
-        assertFalse(
+        assertTrue(
             emptyShoes!!.listArchivedShoes().lowercase().contains("no archived shoes")
         )
     }
@@ -125,7 +127,49 @@ class ShoeAPITest {
         assertTrue(archivedShoesString.contains("black af1"))
         assertFalse(archivedShoesString.contains("badge pool"))
     }
+
+    @Test
+    fun `listShoesBySelectedPriority returns No Shoes when ArrayList is empty`() {
+        assertEquals(0, emptyShoes!!.numberOfShoes())
+        assertTrue(
+            emptyShoes!!.listShoesBySelectedPriority(1).lowercase().contains("no shoes")
+        )
+    }
+
+    @Test
+    fun `listShoesBySelectedPriority returns no shoes when no shoes of that priority exist`() {
+        //Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
+        assertEquals(5, populatedShoes!!.numberOfShoes())
+        val priority2String = populatedShoes!!.listShoesBySelectedPriority(2).lowercase()
+        assertTrue(priority2String.contains("no shoes"))
+        assertTrue(priority2String.contains("2"))
+    }
+
+    @Test
+    fun `listShoesBySelectedPriority returns all shoes that match that priority when shoes of that priority exist`() {
+        //Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
+        assertEquals(5, populatedShoes!!.numberOfShoes())
+        val priority1String = populatedShoes!!.listShoesBySelectedPriority(1).lowercase()
+        assertFalse(priority1String.contains("1 note"))
+        assertFalse(priority1String.contains("priority 1"))
+        assertFalse(priority1String.contains("jordans"))
+        assertFalse(priority1String.contains("vapour max"))
+        assertFalse(priority1String.contains("bradstreet"))
+        assertFalse(priority1String.contains("black af1"))
+        assertFalse(priority1String.contains("badge pool"))
+
+
+
+        val priority4String = populatedShoes!!.listShoesBySelectedPriority(4).lowercase(Locale.getDefault())
+        assertFalse(priority4String.contains("2 note"))
+        assertFalse(priority4String.contains("priority 4"))
+        assertFalse(priority4String.contains("jordans"))
+        assertFalse(priority4String.contains("vapour max"))
+        assertFalse(priority4String.contains("bradstreet"))
+        assertFalse(priority4String.contains("black af1"))
+        assertFalse(priority4String.contains("badge pool"))
+
+    }
+
+
 }
-
-
-
