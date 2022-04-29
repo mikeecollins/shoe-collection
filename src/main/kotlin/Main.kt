@@ -22,6 +22,7 @@ fun mainMenu() : Int {
          >     1) Add Shoe                  |
          > |   2) List all shoes            |
          > |   3) Delete Shoe               |
+         > |   3) Delete Shoe             |
          > |                                |
          > |                                |
          > |                                |
@@ -58,7 +59,8 @@ fun runMenu() {
         when (option) {
             1  -> addShoe()
             2 ->  listShoe()
-            3  -> deleteShoe()
+            5 ->  archiveShoe()
+            4 ->  deleteShoe()
             0  -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -66,15 +68,63 @@ fun runMenu() {
 
 }
 
+fun listShoes() {
+    if (shoeAPI.numberOfShoes() > 0) {
+        val option = readNextInt(
+            """
+                  > --------------------------------
+                  > |   1) View ALL notes          |
+                  > |   2) View ACTIVE notes       |
+                  > |   3) View ARCHIVED notes     |
+                  > --------------------------------
+         > ==>> """.trimMargin(">"))
+
+        when (option) {
+
+            1 -> listActiveShoes();
+            2 -> listArchivedShoes();
+            else -> println("Invalid option entered: " + option);
+        }
+    } else {
+        println("Option Invalid - No notes stored");
+    }
+}
+
+
 
 fun listShoe(){
     println(shoeAPI.listAllShoes())
 }
 
-
+fun listActiveShoes() {
+    println(shoeAPI.listActiveShoes())
+}
 
 fun deleteShoe(){
     println("You chose Delete Shoe")
+}
+
+fun listArchivedShoes() {
+    println(shoeAPI.listArchivedShoes())
+}
+
+fun archiveShoe() {
+    listActiveShoes()
+    if (shoeAPI.numberOfActiveShoes() > 0) {
+        //only ask the user to choose the note to archive if active notes exist
+        val indexToArchive = readNextInt("Enter the index of the note to archive: ")
+        //pass the index of the note to NoteAPI for archiving and check for success.
+        if (shoeAPI.archiveShoe(indexToArchive)) {
+            println("Archive Successful!")
+        } else {
+            println("Archive NOT Successful")
+        }
+    }
+
+    fun listActiveShoes() {
+        println(shoeAPI.listActiveShoes())
+    }
+
 }
 
 

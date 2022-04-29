@@ -7,5 +7,5 @@ data class Shoe(val shoeName: String,
                 val shoeDescription: String,
                 val shoePrice: Double,
                 val shoeType: String,
-                val inCurrentProductLine :Boolean) {
+                var inCurrentProductLine :Boolean) {
 }
