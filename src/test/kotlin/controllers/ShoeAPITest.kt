@@ -24,7 +24,7 @@ class ShoeAPITest {
     fun setup() {
         jordanOnes = Shoe("Jordans", 5, "For jogging ", 70.00, "Runners", false)
         footLocker = Shoe("Vapour Max", 10, "Everyday wear ", 125.00, "Sneakers", false)
-        tommyHilfiger = Shoe("Learning Kotlin", 5, "Casual wear ", 80.00, "Sneakers", false)
+        tommyHilfiger = Shoe("Badge pool", 5, "Casual wear ", 80.00, "Sandals", false)
         TimberLand = Shoe("Bradstreet", 5, "Street wear ", 100.00, "Boots", false)
         nike = Shoe("Black AF1", 11, "Casual ", 110.00, "Runners", false)
 
@@ -79,12 +79,11 @@ class ShoeAPITest {
             @Test
             fun `listAllShoes returns Shoes when ArrayList has shoes stored`() {
                 assertEquals(5, populatedShoes!!.numberOfShoes())
-                val shoesString = populatedShoes!!.listAllShoes().lowercase()
-                assertTrue(shoesString.contains("jordanOnes"))
-                assertTrue(shoesString.contains("footLocker"))
-                assertTrue(shoesString.contains("tommyHilfiger"))
-                assertTrue(shoesString.contains("TimberLand"))
-                assertTrue(shoesString.contains("nike"))
+                val shoesString = populatedShoes!!.listAllShoes()
+                assertTrue(shoesString.contains("Jordans"))
+                assertTrue(shoesString.contains("Vapour Max"))
+                assertTrue(shoesString.contains("Bradstreet"))
+                assertTrue(shoesString.contains("Black AF1"))
             }
         }
     }
