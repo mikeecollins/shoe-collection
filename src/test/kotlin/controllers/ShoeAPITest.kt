@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 
 class ShoeAPITest {
@@ -171,5 +172,23 @@ class ShoeAPITest {
 
     }
 
+    @Nested
+    inner class DeleteNotes {
 
+        @Test
+        fun `deleting a Shoe that does not exist, returns null`() {
+            assertNull(emptyShoes!!.deleteShoe(0))
+            assertNull(populatedShoes!!.deleteShoe(-1))
+            assertNull(populatedShoes!!.deleteShoe(5))
+        }
+
+        @Test
+        fun `deleting a shoe that exists delete and returns deleted object`() {
+            assertEquals(5, populatedShoes!!.numberOfShoes())
+            assertEquals(nike, populatedShoes!!.deleteShoe(4))
+            assertEquals(4, populatedShoes!!.numberOfShoes())
+            assertEquals(jordanOnes, populatedShoes!!.deleteShoe(0))
+            assertEquals(3, populatedShoes!!.numberOfShoes())
+        }
+    }
 }

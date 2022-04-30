@@ -12,6 +12,8 @@ class ShoeAPI {
         return shoes.add(shoe)
     }
 
+
+
     fun isValidIndex(index:Int):Boolean{
         return index >=0 &&index <shoes.size
     }

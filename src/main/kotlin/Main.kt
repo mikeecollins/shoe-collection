@@ -101,7 +101,19 @@ fun listActiveShoes() {
 }
 
 fun deleteShoe(){
-    println("You chose Delete Shoe")
+    //logger.info { "deleteNotes() function invoked" }
+    listShoes()
+    if (shoeAPI.numberOfShoes() > 0) {
+        //only ask the user to choose the note to delete if notes exist
+        val indexToDelete = readNextInt("Enter the index of the note to delete: ")
+        //pass the index of the note to NoteAPI for deleting and check for success.
+        val shoeToDelete = shoeAPI.deleteShoe(indexToDelete)
+        if (shoeToDelete != null) {
+            println("Delete Successful! Deleted note: ${shoeToDelete.shoeName}")
+        } else {
+            println("Delete NOT Successful")
+        }
+    }
 }
 
 fun listArchivedShoes() {
@@ -119,10 +131,6 @@ fun archiveShoe() {
         } else {
             println("Archive NOT Successful")
         }
-    }
-
-    fun listActiveShoes() {
-        println(shoeAPI.listActiveShoes())
     }
 
 }
