@@ -2,10 +2,11 @@ package models
 
 
 
-data class Shoe(val shoeName: String,
-                val shoeSize: Int,
-                val shoeDescription: String,
-                val shoePrice: Double,
-                val shoeType: String,
-                var inCurrentProductLine :Boolean) {
+data class Shoe(
+    var shoeName: String,
+    var shoeSize: Int,
+    var shoeDescription: String,
+    val shoePrice: Double,
+    val shoeType: String,
+    var inCurrentProductLine :Boolean) {
 }

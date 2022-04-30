@@ -160,7 +160,6 @@ class ShoeAPITest {
         assertFalse(priority1String.contains("badge pool"))
 
 
-
         val priority4String = populatedShoes!!.listShoesBySelectedPriority(4).lowercase(Locale.getDefault())
         assertFalse(priority4String.contains("2 note"))
         assertFalse(priority4String.contains("priority 4"))
@@ -190,5 +189,31 @@ class ShoeAPITest {
             assertEquals(jordanOnes, populatedShoes!!.deleteShoe(0))
             assertEquals(3, populatedShoes!!.numberOfShoes())
         }
+    }
+
+    @Nested
+    inner class UpdateShoes {
+        @Test
+        fun `updating a shoe that does not exist returns false`() {
+            assertFalse(populatedShoes!!.updateShoe(6, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
+            assertFalse(populatedShoes!!.updateShoe(-1, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
+            assertFalse(emptyShoes!!.updateShoe(0, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
+        }
+
+    }
+
+    @Test
+    fun `updating ashoenote that exists returns true and updates`() {
+        //check note 5 exists and check the contents
+        assertEquals(nike, populatedShoes!!.findShoe(4))
+        assertEquals("Swim - Pool", populatedShoes!!.findShoe(4)!!.shoeName)
+        assertEquals(3, populatedShoes!!.findShoe(4)!!.shoeSize)
+        assertEquals("Hobby", populatedShoes!!.findShoe(4)!!.shoeDescription)
+
+        //update note 5 with new information and ensure contents updated successfully
+        assertTrue(populatedShoes!!.updateShoe(4, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
+        assertEquals("Updating Shoe", populatedShoes!!.findShoe(4)!!.shoeName)
+        assertEquals(2, populatedShoes!!.findShoe(4)!!.shoeSize)
+        assertEquals("College", populatedShoes!!.findShoe(4)!!.shoeDescription)
     }
 }
