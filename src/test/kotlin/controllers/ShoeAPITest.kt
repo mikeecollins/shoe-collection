@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.XMLSerializer
+import java.io.File
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -20,8 +22,9 @@ class ShoeAPITest {
     private var tommyHilfiger: Shoe? = null
     private var TimberLand: Shoe? = null
     private var nike: Shoe? = null
-    private var populatedShoes: ShoeAPI? = ShoeAPI()
-    private var emptyShoes: ShoeAPI? = ShoeAPI()
+    private var populatedShoes: ShoeAPI? = ShoeAPI(XMLSerializer(File("shoes.xml")))
+    private var emptyShoes: ShoeAPI? = ShoeAPI(XMLSerializer(File("shoes.xml")))
+
 
     @BeforeEach
     fun setup() {

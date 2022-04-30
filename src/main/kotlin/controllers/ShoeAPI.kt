@@ -1,9 +1,11 @@
 package controllers
 
 import models.Shoe
+import persistence.Serializer
 
-class ShoeAPI {
+class ShoeAPI(serializerType: Serializer){
 
+    private var serializer: Serializer = serializerType
 
     private var shoes = ArrayList<Shoe>()
 
@@ -169,5 +171,15 @@ class ShoeAPI {
         }
         return counter
     }
+    @Throws(Exception::class)
+    fun load() {
+        shoes = serializer.read() as ArrayList<Shoe>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(shoes)
+    }
 
 }
+
