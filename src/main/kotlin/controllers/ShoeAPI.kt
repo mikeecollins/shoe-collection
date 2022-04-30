@@ -162,6 +162,9 @@ class ShoeAPI(serializerType: Serializer){
         }
     }
 
+
+
+
     fun numberOfShoesByPriority(priority: Int): Int {
         var counter = 0
         for (shoe in shoes) {
