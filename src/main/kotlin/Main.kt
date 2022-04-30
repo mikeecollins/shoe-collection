@@ -1,5 +1,6 @@
 import controllers.ShoeAPI
 import models.Shoe
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
@@ -8,7 +9,8 @@ import utils.ScannerInput.readNextLine
 import java.io.File
 import java.lang.System.exit
 
-private val shoeAPI = ShoeAPI(XMLSerializer(File("shoes.xml")))
+//private val shoeAPI = ShoeAPI(XMLSerializer(File("shoes.xml")))
+private val shoeAPI = ShoeAPI(JSONSerializer(File("shoes.json")))
 
 fun main(args: Array<String>) {
     runMenu()

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.io.File
 import java.util.*
@@ -255,6 +256,44 @@ class ShoeAPITest {
         loadedShoes.load()
 
         //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+        assertEquals(3, storingShoes.numberOfShoes())
+        assertEquals(3, loadedShoes.numberOfShoes())
+        assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
+        assertEquals(storingShoes.findShoe(0), loadedShoes.findShoe(0))
+        assertEquals(storingShoes.findShoe(1), loadedShoes.findShoe(1))
+        assertEquals(storingShoes.findShoe(2), loadedShoes.findShoe(2))
+    }
+
+    @Test
+    fun `saving and loading an empty collection in JSON doesn't crash app`() {
+        // Saving an empty notes.json file.
+        val storingShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
+        storingShoes.store()
+
+        //Loading the empty notes.json file into a new object
+        val loadedShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
+        loadedShoes.load()
+
+        //Comparing the source of the notes (storingNotes) with the json loaded notes (loadedNotes)
+        assertEquals(0, storingShoes.numberOfShoes())
+        assertEquals(0, loadedShoes.numberOfShoes())
+        assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
+    }
+
+    @Test
+    fun `saving and loading an loaded collection in JSON doesn't loose data`() {
+        // Storing 3 notes to the notes.json file.
+        val storingShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
+        storingShoes.add(nike!!)
+        storingShoes.add(tommyHilfiger!!)
+        storingShoes.add(jordanOnes!!)
+        storingShoes.store()
+
+        //Loading notes.json into a different collection
+        val loadedShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
+        loadedShoes.load()
+
+        //Comparing the source of the notes (storingNotes) with the json loaded notes (loadedNotes)
         assertEquals(3, storingShoes.numberOfShoes())
         assertEquals(3, loadedShoes.numberOfShoes())
         assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
