@@ -35,8 +35,8 @@ fun mainMenu() : Int {
          > |                                |
          > |                                |
          > ----------------------------------
-         >     20) Save notes               |
-         > |   21) Load notes               |
+         >     20) Save Shoes               |
+         > |   21) Load shoes               |
          > |   0) Exit                      |
          > |                                |
          > ----------------------------------
@@ -94,6 +94,7 @@ fun listShoes() {
             1 -> listAllNotes();
             2 -> listActiveShoes();
             3 -> listArchivedShoes();
+            4 -> searchShoes()
             else -> println("Invalid option entered: " + option);
         }
     } else {
@@ -182,6 +183,18 @@ fun save() {
         System.err.println("Error writing to file: $e")
     }
 }
+fun searchShoes() {
+    val searchName = readNextLine("Enter the description to search by: ")
+    val searchResults = shoeAPI.searchByName(searchName)
+    if (searchResults.isEmpty()) {
+        println("No notes found")
+    } else {
+        println(searchResults)
+    }
+}
+
+
+
 
 fun load() {
     try {
