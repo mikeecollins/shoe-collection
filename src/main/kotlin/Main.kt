@@ -1,12 +1,16 @@
 import controllers.ShoeAPI
 import models.Shoe
+import persistence.JSONSerializer
+import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
+import java.io.File
 import java.lang.System.exit
 
-private val shoeAPI = ShoeAPI()
+//private val shoeAPI = ShoeAPI(XMLSerializer(File("shoes.xml")))
+private val shoeAPI = ShoeAPI(JSONSerializer(File("shoes.json")))
 
 fun main(args: Array<String>) {
     runMenu()
@@ -21,8 +25,9 @@ fun mainMenu() : Int {
          > | KICKS MENU                     |
          >     1) Add Shoe                  |
          > |   2) List all shoes            |
-         > |   3) Delete Shoe               |
-         > |   3) Delete Shoe             |
+         > |   3) Update Shoe               |
+         > |   4) archive Shoe              |
+         > |   5) Delete shoe               |
          > |                                |
          > |                                |
          > |                                |
@@ -30,7 +35,10 @@ fun mainMenu() : Int {
          > |                                |
          > |                                |
          > ----------------------------------
+         >     20) Save notes               |
+         > |   21) Load notes               |
          > |   0) Exit                      |
+         > |                                |
          > ----------------------------------
          > ==>> """.trimMargin(">"))
 
@@ -59,9 +67,11 @@ fun runMenu() {
         when (option) {
             1  -> addShoe()
             2 ->  listShoe()
-            2 ->  updateShoe()
-            5 ->  archiveShoe()
-            4 ->  deleteShoe()
+            3 ->  updateShoe()
+            4 ->  archiveShoe()
+            5 ->  deleteShoe()
+            20 -> save()
+            21 -> load()
             0  -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -160,6 +170,22 @@ fun archiveShoe() {
         }
     }
 
+}
+
+fun save() {
+    try {
+        shoeAPI.store()
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun load() {
+    try {
+        shoeAPI.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
+    }
 }
 
 
