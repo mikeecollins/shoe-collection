@@ -37,6 +37,25 @@ class ShoeAPI {
         }
 
 
+
+
+    }
+
+
+    fun updateShoe(indexToUpdate: Int, shoe: Shoe?): Boolean {
+        //find the note object by the index number
+        val foundShoe = findShoe(indexToUpdate)
+
+        //if the note exists, use the note details passed as parameters to update the found note in the ArrayList.
+        if ((foundShoe != null) && (shoe != null)) {
+            foundShoe.shoeName = shoe.shoeName
+            foundShoe.shoeSize = shoe.shoeSize
+            foundShoe.shoeDescription = shoe.shoeDescription
+            return true
+        }
+
+        //if the note was not found, return false, indicating that the update was not successful
+        return false
     }
 
     fun numberOfShoes(): Int {

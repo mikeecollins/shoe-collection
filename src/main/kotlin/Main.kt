@@ -59,6 +59,7 @@ fun runMenu() {
         when (option) {
             1  -> addShoe()
             2 ->  listShoe()
+            2 ->  updateShoe()
             5 ->  archiveShoe()
             4 ->  deleteShoe()
             0  -> exitApp()
@@ -112,6 +113,32 @@ fun deleteShoe(){
             println("Delete Successful! Deleted note: ${shoeToDelete.shoeName}")
         } else {
             println("Delete NOT Successful")
+        }
+    }
+}
+
+
+fun updateShoe() {
+    //logger.info { "updateNotes() function invoked" }
+    listShoes()
+    if (shoeAPI.numberOfShoes() > 0) {
+        //only ask the user to choose the note if notes exist
+        val indexToUpdate = readNextInt("Enter the index of the Shoe to update: ")
+        if (shoeAPI.isValidIndex(indexToUpdate)) {
+            val shoeName = readNextLine("Enter a Shoe for the Shoe: ")
+            val shoeSize = readNextInt("Enter the Size of the Shoe between 2-14 ")
+            val shoeDescription = readNextLine("Enter a Description for the shoe: ")
+            val shoePrice = readNextDouble("How much will the shoe cost: ")
+            val shoeType = readNextLine("What type of shoe is this: ")
+
+            //pass the index of the note and the new note details to NoteAPI for updating and check for success.
+            if (shoeAPI.updateShoe(indexToUpdate, Shoe(shoeName, shoeSize, shoeDescription, shoePrice,shoeType,false))){
+                println("Update Successful")
+            } else {
+                println("Update Failed")
+            }
+        } else {
+            println("There are no notes for this index number")
         }
     }
 }
