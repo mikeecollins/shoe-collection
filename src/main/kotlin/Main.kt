@@ -91,9 +91,9 @@ fun listShoes() {
          > ==>> """.trimMargin(">"))
 
         when (option) {
-
-            1 -> listActiveShoes();
-            2 -> listArchivedShoes();
+            1 -> listAllNotes();
+            2 -> listActiveShoes();
+            3 -> listArchivedShoes();
             else -> println("Invalid option entered: " + option);
         }
     } else {
@@ -101,6 +101,9 @@ fun listShoes() {
     }
 }
 
+fun listAllNotes() {
+    println(shoeAPI.listAllShoes())
+}
 
 
 fun listShoe(){
