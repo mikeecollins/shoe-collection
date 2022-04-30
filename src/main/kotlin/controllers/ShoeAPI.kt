@@ -108,6 +108,10 @@ class ShoeAPI(serializerType: Serializer){
 
     }
 
+
+
+
+
     fun numberOfArchivedShoes(): Int {
         //return notes.stream().filter { obj: Note -> obj.isNoteArchived }.count().toInt()
         var counter = 0
@@ -160,7 +164,18 @@ class ShoeAPI(serializerType: Serializer){
                 "${numberOfShoesByPriority(priority)} shoes with priority $priority: $listOfShoes"
             }
         }
+
+
     }
+    fun formatListString(shoesToFormat : List<Shoe>) : String =
+        shoesToFormat
+            .joinToString (separator = "\n") { shoe ->
+                shoes.indexOf(shoe).toString() + ": " + shoe.toString() }
+
+    fun searchByName(searchString : String) =
+        shoes.filter { shoe -> shoe.shoeName.contains(searchString, ignoreCase = true)}
+            .joinToString (separator = "\n") {
+                    shoe ->  shoes.indexOf(shoe).toString() + ": " + shoe.toString() }
 
 
 

@@ -333,4 +333,42 @@ class ShoeAPITest {
             assertEquals(0, +emptyShoes!!.numberOfShoesByPriority(1))
         }
     }
+
+    @Nested
+    inner class SearchMethods {
+
+        @Test
+        fun `search shoes by title returns no notes when no shoes with that title exist`() {
+            //Searching a populated collection for a title that doesn't exist.
+            assertEquals(5, populatedShoes!!.numberOfShoes())
+            val searchResults = populatedShoes!!.searchByName("no results expected")
+            assertTrue(searchResults.isEmpty())
+
+            //Searching an empty collection
+            assertEquals(0, emptyShoes!!.numberOfShoes())
+            assertTrue(emptyShoes!!.searchByName("").isEmpty())
+        }
+
+        @Test
+        fun `search notes by title returns notes when notes with that title exist`() {
+            assertEquals(5, populatedShoes!!.numberOfShoes())
+
+            //Searching a populated collection for a full title that exists (case matches exactly)
+            var searchResults = populatedShoes!!.searchByName("Code App")
+            assertTrue(searchResults.contains("Black AF1"))
+            assertFalse(searchResults.contains("Test App"))
+
+            //Searching a populated collection for a partial title that exists (case matches exactly)
+            searchResults = populatedShoes!!.searchByName("App")
+            assertTrue(searchResults.contains("bradstreet"))
+            assertTrue(searchResults.contains("Badge pool"))
+            assertFalse(searchResults.contains("vapour max"))
+
+            //Searching a populated collection for a partial title that exists (case doesn't match)
+            searchResults = populatedShoes!!.searchByName("aPp")
+            assertTrue(searchResults.contains("vapour max"))
+            assertTrue(searchResults.contains("Black AF1"))
+            assertFalse(searchResults.contains("TimberLands"))
+        }
+    }
 }
