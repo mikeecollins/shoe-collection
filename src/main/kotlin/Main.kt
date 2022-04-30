@@ -84,9 +84,9 @@ fun listShoes() {
         val option = readNextInt(
             """
                   > --------------------------------
-                  > |   1) View ALL notes          |
-                  > |   2) View ACTIVE notes       |
-                  > |   3) View ARCHIVED notes     |
+                  > |   1) View ALL shoes          |
+                  > |   2) View ACTIVE shoes       |
+                  > |   3) View ARCHIVED shoes     |
                   > --------------------------------
          > ==>> """.trimMargin(">"))
 
@@ -97,7 +97,7 @@ fun listShoes() {
             else -> println("Invalid option entered: " + option);
         }
     } else {
-        println("Option Invalid - No notes stored");
+        println("Option Invalid - No shoes stored");
     }
 }
 
@@ -116,11 +116,11 @@ fun deleteShoe(){
     listShoes()
     if (shoeAPI.numberOfShoes() > 0) {
         //only ask the user to choose the note to delete if notes exist
-        val indexToDelete = readNextInt("Enter the index of the note to delete: ")
+        val indexToDelete = readNextInt("Enter the index of the shoe to delete: ")
         //pass the index of the note to NoteAPI for deleting and check for success.
         val shoeToDelete = shoeAPI.deleteShoe(indexToDelete)
         if (shoeToDelete != null) {
-            println("Delete Successful! Deleted note: ${shoeToDelete.shoeName}")
+            println("Delete Successful! Deleted shoe: ${shoeToDelete.shoeName}")
         } else {
             println("Delete NOT Successful")
         }
@@ -148,7 +148,7 @@ fun updateShoe() {
                 println("Update Failed")
             }
         } else {
-            println("There are no notes for this index number")
+            println("There are no shoe for this index number")
         }
     }
 }
@@ -161,7 +161,7 @@ fun archiveShoe() {
     listActiveShoes()
     if (shoeAPI.numberOfActiveShoes() > 0) {
         //only ask the user to choose the note to archive if active notes exist
-        val indexToArchive = readNextInt("Enter the index of the note to archive: ")
+        val indexToArchive = readNextInt("Enter the index of the +shoe to archive: ")
         //pass the index of the note to NoteAPI for archiving and check for success.
         if (shoeAPI.archiveShoe(indexToArchive)) {
             println("Archive Successful!")
