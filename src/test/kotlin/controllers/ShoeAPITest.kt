@@ -301,4 +301,36 @@ class ShoeAPITest {
         assertEquals(storingShoes.findShoe(1), loadedShoes.findShoe(1))
         assertEquals(storingShoes.findShoe(2), loadedShoes.findShoe(2))
     }
+
+    @Nested
+    inner class CountingMethods {
+
+        @Test
+        fun numberOfShoesCalculatedCorrectly() {
+            assertEquals(5, populatedShoes!!.numberOfShoes())
+            assertEquals(0, emptyShoes!!.numberOfShoes())
+        }
+
+        @Test
+        fun numberOfArchivedShoesCalculatedCorrectly() {
+            assertEquals(2, populatedShoes!!.numberOfArchivedShoes())
+            assertEquals(0, emptyShoes!!.numberOfArchivedShoes())
+        }
+
+        @Test
+        fun numberOfActiveShoesCalculatedCorrectly() {
+            assertEquals(3, populatedShoes!!.numberOfActiveShoes())
+            assertEquals(0, emptyShoes!!.numberOfActiveShoes())
+        }
+
+        @Test
+        fun numberOfShoesByPriorityCalculatedCorrectly() {
+            assertEquals(1, populatedShoes!!.numberOfShoesByPriority(1))
+            assertEquals(0, populatedShoes!!.numberOfShoesByPriority(2))
+            assertEquals(1, populatedShoes!!.numberOfShoesByPriority(3))
+            assertEquals(2, populatedShoes!!.numberOfShoesByPriority(4))
+            assertEquals(1, populatedShoes!!.numberOfShoesByPriority(5))
+            assertEquals(0, +emptyShoes!!.numberOfShoesByPriority(1))
+        }
+    }
 }
