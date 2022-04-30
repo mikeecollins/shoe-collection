@@ -206,17 +206,60 @@ class ShoeAPITest {
     }
 
     @Test
-    fun `updating ashoenote that exists returns true and updates`() {
+    fun `updating a shoe that exists returns true and updates`() {
         //check note 5 exists and check the contents
         assertEquals(nike, populatedShoes!!.findShoe(4))
-        assertEquals("Swim - Pool", populatedShoes!!.findShoe(4)!!.shoeName)
-        assertEquals(3, populatedShoes!!.findShoe(4)!!.shoeSize)
-        assertEquals("Hobby", populatedShoes!!.findShoe(4)!!.shoeDescription)
+        assertEquals("Black AF1", populatedShoes!!.findShoe(4)!!.shoeName)
+        assertEquals(11, populatedShoes!!.findShoe(4)!!.shoeSize)
+        assertEquals("Casual", populatedShoes!!.findShoe(4)!!.shoeDescription)
 
         //update note 5 with new information and ensure contents updated successfully
         assertTrue(populatedShoes!!.updateShoe(4, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
         assertEquals("Updating Shoe", populatedShoes!!.findShoe(4)!!.shoeName)
         assertEquals(2, populatedShoes!!.findShoe(4)!!.shoeSize)
         assertEquals("College", populatedShoes!!.findShoe(4)!!.shoeDescription)
+    }
+
+    @Nested
+    inner class PersistenceTests {
+
+        @Test
+        fun `saving and loading an empty collection in XML doesn't crash app`() {
+            // Saving an empty notes.XML file.
+            val storingShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
+            storingShoes.store()
+
+            //Loading the empty notes.xml file into a new object
+            val loadedShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
+            loadedShoes.load()
+
+            //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+            assertEquals(0, storingShoes.numberOfShoes())
+            assertEquals(0, loadedShoes.numberOfShoes())
+            assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
+        }
+    }
+
+
+    @Test
+    fun `saving and loading an loaded collection in XML doesn't loose data`() {
+        // Storing 3 notes to the notes.XML file.
+        val storingShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
+        storingShoes.add(nike!!)
+        storingShoes.add(tommyHilfiger!!)
+        storingShoes.add(TimberLand!!)
+        storingShoes.store()
+
+        //Loading notes.xml into a different collection
+        val loadedShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
+        loadedShoes.load()
+
+        //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+        assertEquals(3, storingShoes.numberOfShoes())
+        assertEquals(3, loadedShoes.numberOfShoes())
+        assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
+        assertEquals(storingShoes.findShoe(0), loadedShoes.findShoe(0))
+        assertEquals(storingShoes.findShoe(1), loadedShoes.findShoe(1))
+        assertEquals(storingShoes.findShoe(2), loadedShoes.findShoe(2))
     }
 }
