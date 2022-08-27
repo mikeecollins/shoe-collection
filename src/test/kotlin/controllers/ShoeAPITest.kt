@@ -1,21 +1,18 @@
 ﻿package controllers
 
-
 import models.Shoe
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.io.File
-import java.util.*
+import java.util.Locale
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
-
-
+import kotlin.test.assertTrue
 class ShoeAPITest {
 
     private var jordanOnes: Shoe? = null
@@ -26,7 +23,6 @@ class ShoeAPITest {
     private var populatedShoes: ShoeAPI? = ShoeAPI(XMLSerializer(File("shoes.xml")))
     private var emptyShoes: ShoeAPI? = ShoeAPI(XMLSerializer(File("shoes.xml")))
 
-
     @BeforeEach
     fun setup() {
         jordanOnes = Shoe("Jordans", 5, "For jogging ", 70.00, "Runners", false)
@@ -34,7 +30,6 @@ class ShoeAPITest {
         tommyHilfiger = Shoe("Badge pool", 5, "Casual wear ", 80.00, "Sandals", false)
         TimberLand = Shoe("Bradstreet", 5, "Street wear ", 100.00, "Boots", false)
         nike = Shoe("Black AF1", 11, "Casual ", 110.00, "Runners", true)
-
 
         populatedShoes!!.add(jordanOnes!!)
         populatedShoes!!.add(footLocker!!)
@@ -143,7 +138,7 @@ class ShoeAPITest {
 
     @Test
     fun `listShoesBySelectedPriority returns no shoes when no shoes of that priority exist`() {
-        //Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
+        // Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
         assertEquals(5, populatedShoes!!.numberOfShoes())
         val priority2String = populatedShoes!!.listShoesBySelectedPriority(2).lowercase()
         assertTrue(priority2String.contains("no shoes"))
@@ -152,7 +147,7 @@ class ShoeAPITest {
 
     @Test
     fun `listShoesBySelectedPriority returns all shoes that match that priority when shoes of that priority exist`() {
-        //Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
+        // Priority 1 (1 note), 2 (none), 3 (1 note). 4 (2 notes), 5 (1 note)
         assertEquals(5, populatedShoes!!.numberOfShoes())
         val priority1String = populatedShoes!!.listShoesBySelectedPriority(1).lowercase()
         assertFalse(priority1String.contains("1 note"))
@@ -163,7 +158,6 @@ class ShoeAPITest {
         assertFalse(priority1String.contains("black af1"))
         assertFalse(priority1String.contains("badge pool"))
 
-
         val priority4String = populatedShoes!!.listShoesBySelectedPriority(4).lowercase(Locale.getDefault())
         assertFalse(priority4String.contains("2 note"))
         assertFalse(priority4String.contains("priority 4"))
@@ -172,7 +166,6 @@ class ShoeAPITest {
         assertFalse(priority4String.contains("bradstreet"))
         assertFalse(priority4String.contains("black af1"))
         assertFalse(priority4String.contains("badge pool"))
-
     }
 
     @Nested
@@ -203,18 +196,17 @@ class ShoeAPITest {
             assertFalse(populatedShoes!!.updateShoe(-1, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
             assertFalse(emptyShoes!!.updateShoe(0, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
         }
-
     }
 
     @Test
     fun `updating a shoe that exists returns true and updates`() {
-        //check note 5 exists and check the contents
+        // check note 5 exists and check the contents
         assertEquals(nike, populatedShoes!!.findShoe(4))
         assertEquals("Black AF1", populatedShoes!!.findShoe(4)!!.shoeName)
         assertEquals(11, populatedShoes!!.findShoe(4)!!.shoeSize)
         assertEquals("Casual", populatedShoes!!.findShoe(4)!!.shoeDescription)
 
-        //update note 5 with new information and ensure contents updated successfully
+        // update note 5 with new information and ensure contents updated successfully
         assertTrue(populatedShoes!!.updateShoe(4, Shoe("Updating Shoe", 11, "Work ", 110.00, "Runners", false)))
         assertEquals("Updating Shoe", populatedShoes!!.findShoe(4)!!.shoeName)
         assertEquals(2, populatedShoes!!.findShoe(4)!!.shoeSize)
@@ -230,17 +222,16 @@ class ShoeAPITest {
             val storingShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
             storingShoes.store()
 
-            //Loading the empty notes.xml file into a new object
+            // Loading the empty notes.xml file into a new object
             val loadedShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
             loadedShoes.load()
 
-            //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+            // Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
             assertEquals(0, storingShoes.numberOfShoes())
             assertEquals(0, loadedShoes.numberOfShoes())
             assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
         }
     }
-
 
     @Test
     fun `saving and loading an loaded collection in XML doesn't loose data`() {
@@ -251,11 +242,11 @@ class ShoeAPITest {
         storingShoes.add(TimberLand!!)
         storingShoes.store()
 
-        //Loading notes.xml into a different collection
+        // Loading notes.xml into a different collection
         val loadedShoes = ShoeAPI(XMLSerializer(File("shoes.xml")))
         loadedShoes.load()
 
-        //Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
+        // Comparing the source of the notes (storingNotes) with the XML loaded notes (loadedNotes)
         assertEquals(3, storingShoes.numberOfShoes())
         assertEquals(3, loadedShoes.numberOfShoes())
         assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
@@ -270,11 +261,11 @@ class ShoeAPITest {
         val storingShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
         storingShoes.store()
 
-        //Loading the empty notes.json file into a new object
+        // Loading the empty notes.json file into a new object
         val loadedShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
         loadedShoes.load()
 
-        //Comparing the source of the notes (storingNotes) with the json loaded notes (loadedNotes)
+        // Comparing the source of the notes (storingNotes) with the json loaded notes (loadedNotes)
         assertEquals(0, storingShoes.numberOfShoes())
         assertEquals(0, loadedShoes.numberOfShoes())
         assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
@@ -289,11 +280,11 @@ class ShoeAPITest {
         storingShoes.add(jordanOnes!!)
         storingShoes.store()
 
-        //Loading notes.json into a different collection
+        // Loading notes.json into a different collection
         val loadedShoes = ShoeAPI(JSONSerializer(File("shoes.json")))
         loadedShoes.load()
 
-        //Comparing the source of the notes (storingNotes) with the json loaded notes (loadedNotes)
+        // Comparing the source of the notes (storingNotes) with the json loaded notes (loadedNotes)
         assertEquals(3, storingShoes.numberOfShoes())
         assertEquals(3, loadedShoes.numberOfShoes())
         assertEquals(storingShoes.numberOfShoes(), loadedShoes.numberOfShoes())
@@ -339,12 +330,12 @@ class ShoeAPITest {
 
         @Test
         fun `search shoes by title returns no notes when no shoes with that title exist`() {
-            //Searching a populated collection for a title that doesn't exist.
+            // Searching a populated collection for a title that doesn't exist.
             assertEquals(5, populatedShoes!!.numberOfShoes())
             val searchResults = populatedShoes!!.searchByName("no results expected")
             assertTrue(searchResults.isEmpty())
 
-            //Searching an empty collection
+            // Searching an empty collection
             assertEquals(0, emptyShoes!!.numberOfShoes())
             assertTrue(emptyShoes!!.searchByName("").isEmpty())
         }
@@ -353,18 +344,18 @@ class ShoeAPITest {
         fun `search notes by title returns notes when notes with that title exist`() {
             assertEquals(5, populatedShoes!!.numberOfShoes())
 
-            //Searching a populated collection for a full title that exists (case matches exactly)
+            // Searching a populated collection for a full title that exists (case matches exactly)
             var searchResults = populatedShoes!!.searchByName("Code App")
             assertTrue(searchResults.contains("Black AF1"))
             assertFalse(searchResults.contains("Test App"))
 
-            //Searching a populated collection for a partial title that exists (case matches exactly)
+            // Searching a populated collection for a partial title that exists (case matches exactly)
             searchResults = populatedShoes!!.searchByName("App")
             assertTrue(searchResults.contains("bradstreet"))
             assertTrue(searchResults.contains("Badge pool"))
             assertFalse(searchResults.contains("vapour max"))
 
-            //Searching a populated collection for a partial title that exists (case doesn't match)
+            // Searching a populated collection for a partial title that exists (case doesn't match)
             searchResults = populatedShoes!!.searchByName("aPp")
             assertTrue(searchResults.contains("vapour max"))
             assertTrue(searchResults.contains("Black AF1"))
