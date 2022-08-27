@@ -3,21 +3,18 @@ package controllers
 import models.Shoe
 import persistence.Serializer
 
-class ShoeAPI(serializerType: Serializer){
+class ShoeAPI(serializerType: Serializer) {
 
     private var serializer: Serializer = serializerType
 
     private var shoes = ArrayList<Shoe>()
 
-
     fun add(shoe: Shoe): Boolean {
         return shoes.add(shoe)
     }
 
-
-
-    fun isValidIndex(index:Int):Boolean{
-        return index >=0 &&index <shoes.size
+    fun isValidIndex(index: Int): Boolean {
+        return index >= 0 && index <shoes.size
     }
 
     fun deleteShoe(indexToDelete: Int): Shoe? {
@@ -26,29 +23,23 @@ class ShoeAPI(serializerType: Serializer){
         } else null
     }
 
-
     fun listAllShoes(): String {
         return if (shoes.isEmpty()) {
             "No Shoes Found"
         } else {
             var listOfShoes = ""
             for (i in shoes.indices) {
-                listOfShoes += "${i}: ${shoes[i]} \n"
+                listOfShoes += "$i: ${shoes[i]} \n"
             }
             listOfShoes
         }
-
-
-
-
     }
 
-
     fun updateShoe(indexToUpdate: Int, shoe: Shoe?): Boolean {
-        //find the note object by the index number
+        // find the note object by the index number
         val foundShoe = findShoe(indexToUpdate)
 
-        //if the note exists, use the note details passed as parameters to update the found note in the ArrayList.
+        // if the note exists, use the note details passed as parameters to update the found note in the ArrayList.
         if ((foundShoe != null) && (shoe != null)) {
             foundShoe.shoeName = shoe.shoeName
             foundShoe.shoeSize = shoe.shoeSize
@@ -56,7 +47,7 @@ class ShoeAPI(serializerType: Serializer){
             return true
         }
 
-        //if the note was not found, return false, indicating that the update was not successful
+        // if the note was not found, return false, indicating that the update was not successful
         return false
     }
 
@@ -70,11 +61,10 @@ class ShoeAPI(serializerType: Serializer){
         } else null
     }
 
-    //utility method to determine if an index is valid in a list.
+    // utility method to determine if an index is valid in a list.
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
-
 
     fun listActiveShoes(): String {
         return if (numberOfActiveShoes() == 0) {
@@ -102,18 +92,10 @@ class ShoeAPI(serializerType: Serializer){
             }
             listOfArchivedShoes
         }
-
-
-
-
     }
 
-
-
-
-
     fun numberOfArchivedShoes(): Int {
-        //return notes.stream().filter { obj: Note -> obj.isNoteArchived }.count().toInt()
+        // return notes.stream().filter { obj: Note -> obj.isNoteArchived }.count().toInt()
         var counter = 0
         for (shoe in shoes) {
             if (shoe.inCurrentProductLine) {
@@ -134,9 +116,8 @@ class ShoeAPI(serializerType: Serializer){
         return false
     }
 
-
     fun numberOfActiveShoes(): Int {
-        //return notes.stream().filter { p: Note -> !p.isNoteArchived }.count().toInt()
+        // return notes.stream().filter { p: Note -> !p.isNoteArchived }.count().toInt()
         var counter = 0
         for (shoe in shoes) {
             if (!shoe.inCurrentProductLine) {
@@ -164,21 +145,19 @@ class ShoeAPI(serializerType: Serializer){
                 "${numberOfShoesByPriority(priority)} shoes with priority $priority: $listOfShoes"
             }
         }
-
-
     }
-    fun formatListString(shoesToFormat : List<Shoe>) : String =
+    fun formatListString(shoesToFormat: List<Shoe>): String =
         shoesToFormat
-            .joinToString (separator = "\n") { shoe ->
-                shoes.indexOf(shoe).toString() + ": " + shoe.toString() }
+            .joinToString(separator = "\n") { shoe ->
+                shoes.indexOf(shoe).toString() + ": " + shoe.toString()
+            }
 
-    fun searchByName(searchString : String) =
-        shoes.filter { shoe -> shoe.shoeName.contains(searchString, ignoreCase = true)}
-            .joinToString (separator = "\n") {
-                    shoe ->  shoes.indexOf(shoe).toString() + ": " + shoe.toString() }
-
-
-
+    fun searchByName(searchString: String) =
+        shoes.filter { shoe -> shoe.shoeName.contains(searchString, ignoreCase = true) }
+            .joinToString(separator = "\n") {
+                shoe ->
+                shoes.indexOf(shoe).toString() + ": " + shoe.toString()
+            }
 
     fun numberOfShoesByPriority(priority: Int): Int {
         var counter = 0
@@ -198,6 +177,4 @@ class ShoeAPI(serializerType: Serializer){
     fun store() {
         serializer.write(shoes)
     }
-
 }
-

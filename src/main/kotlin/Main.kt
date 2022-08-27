@@ -1,7 +1,6 @@
 import controllers.ShoeAPI
 import models.Shoe
 import persistence.JSONSerializer
-import persistence.XMLSerializer
 import utils.ScannerInput
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
@@ -9,16 +8,16 @@ import utils.ScannerInput.readNextLine
 import java.io.File
 import java.lang.System.exit
 
-//private val shoeAPI = ShoeAPI(XMLSerializer(File("shoes.xml")))
+// private val shoeAPI = ShoeAPI(XMLSerializer(File("shoes.xml")))
 private val shoeAPI = ShoeAPI(JSONSerializer(File("shoes.json")))
 
 fun main(args: Array<String>) {
     runMenu()
 }
 
-
-fun mainMenu() : Int {
-    return ScannerInput.readNextInt(""" 
+fun mainMenu(): Int {
+    return ScannerInput.readNextInt(
+        """ 
          > ----------------------------------
          > |        KICKS MENU              |
          > ----------------------------------
@@ -40,43 +39,40 @@ fun mainMenu() : Int {
          > |   0) Exit                      |
          > |                                |
          > ----------------------------------
-         > ==>> """.trimMargin(">"))
-
+         > ==>> """.trimMargin(">")
+    )
 }
 
-fun addShoe(){
+fun addShoe() {
     val shoeName = readNextLine("Enter the shoe you would like to add: ")
     val shoeSize = readNextInt("Enter the size of the shoe ")
     val shoeDescription = readNextLine("What is this Shoe for ")
     val shoePrice = readNextDouble("Enter the Price of the Shoe")
     val shoeType = readNextLine("What Shoe type would you like")
-    val isAdded = shoeAPI.add(Shoe(shoeName,shoeSize , shoeDescription,shoePrice,shoeType, false))
+    val isAdded = shoeAPI.add(Shoe(shoeName, shoeSize, shoeDescription, shoePrice, shoeType, false))
 
     if (isAdded) {
         println("Added Successfully")
     } else {
         println("Add Failed")
     }
-
-
 }
 
 fun runMenu() {
     do {
         val option = mainMenu()
         when (option) {
-            1  -> addShoe()
-            2 ->  listShoe()
-            3 ->  updateShoe()
-            4 ->  archiveShoe()
-            5 ->  deleteShoe()
+            1 -> addShoe()
+            2 -> listShoe()
+            3 -> updateShoe()
+            4 -> archiveShoe()
+            5 -> deleteShoe()
             20 -> save()
             21 -> load()
-            0  -> exitApp()
-            else -> System.out.println("Invalid option entered: ${option}")
+            0 -> exitApp()
+            else -> System.out.println("Invalid option entered: $option")
         }
     } while (true)
-
 }
 
 fun listShoes() {
@@ -88,17 +84,18 @@ fun listShoes() {
                   > |   2) View ACTIVE shoes       |
                   > |   3) View ARCHIVED shoes     |
                   > --------------------------------
-         > ==>> """.trimMargin(">"))
+         > ==>> """.trimMargin(">")
+        )
 
         when (option) {
-            1 -> listAllNotes();
-            2 -> listActiveShoes();
-            3 -> listArchivedShoes();
+            1 -> listAllNotes()
+            2 -> listActiveShoes()
+            3 -> listArchivedShoes()
             4 -> searchShoes()
-            else -> println("Invalid option entered: " + option);
+            else -> println("Invalid option entered: " + option)
         }
     } else {
-        println("Option Invalid - No shoes stored");
+        println("Option Invalid - No shoes stored")
     }
 }
 
@@ -106,8 +103,7 @@ fun listAllNotes() {
     println(shoeAPI.listAllShoes())
 }
 
-
-fun listShoe(){
+fun listShoe() {
     println(shoeAPI.listAllShoes())
 }
 
@@ -115,13 +111,13 @@ fun listActiveShoes() {
     println(shoeAPI.listActiveShoes())
 }
 
-fun deleteShoe(){
-    //logger.info { "deleteNotes() function invoked" }
+fun deleteShoe() {
+    // logger.info { "deleteNotes() function invoked" }
     listShoes()
     if (shoeAPI.numberOfShoes() > 0) {
-        //only ask the user to choose the note to delete if notes exist
+        // only ask the user to choose the note to delete if notes exist
         val indexToDelete = readNextInt("Enter the index of the shoe to delete: ")
-        //pass the index of the note to NoteAPI for deleting and check for success.
+        // pass the index of the note to NoteAPI for deleting and check for success.
         val shoeToDelete = shoeAPI.deleteShoe(indexToDelete)
         if (shoeToDelete != null) {
             println("Delete Successful! Deleted shoe: ${shoeToDelete.shoeName}")
@@ -131,12 +127,11 @@ fun deleteShoe(){
     }
 }
 
-
 fun updateShoe() {
-    //logger.info { "updateNotes() function invoked" }
+    // logger.info { "updateNotes() function invoked" }
     listShoes()
     if (shoeAPI.numberOfShoes() > 0) {
-        //only ask the user to choose the note if notes exist
+        // only ask the user to choose the note if notes exist
         val indexToUpdate = readNextInt("Enter the index of the Shoe to update: ")
         if (shoeAPI.isValidIndex(indexToUpdate)) {
             val shoeName = readNextLine("Enter a Shoe for the Shoe: ")
@@ -145,8 +140,8 @@ fun updateShoe() {
             val shoePrice = readNextDouble("How much will the shoe cost: ")
             val shoeType = readNextLine("What type of shoe is this: ")
 
-            //pass the index of the note and the new note details to NoteAPI for updating and check for success.
-            if (shoeAPI.updateShoe(indexToUpdate, Shoe(shoeName, shoeSize, shoeDescription, shoePrice,shoeType,false))){
+            // pass the index of the note and the new note details to NoteAPI for updating and check for success.
+            if (shoeAPI.updateShoe(indexToUpdate, Shoe(shoeName, shoeSize, shoeDescription, shoePrice, shoeType, false))) {
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -164,16 +159,15 @@ fun listArchivedShoes() {
 fun archiveShoe() {
     listActiveShoes()
     if (shoeAPI.numberOfActiveShoes() > 0) {
-        //only ask the user to choose the note to archive if active notes exist
+        // only ask the user to choose the note to archive if active notes exist
         val indexToArchive = readNextInt("Enter the index of the +shoe to archive: ")
-        //pass the index of the note to NoteAPI for archiving and check for success.
+        // pass the index of the note to NoteAPI for archiving and check for success.
         if (shoeAPI.archiveShoe(indexToArchive)) {
             println("Archive Successful!")
         } else {
             println("Archive NOT Successful")
         }
     }
-
 }
 
 fun save() {
@@ -193,9 +187,6 @@ fun searchShoes() {
     }
 }
 
-
-
-
 fun load() {
     try {
         shoeAPI.load()
@@ -204,9 +195,7 @@ fun load() {
     }
 }
 
-
-fun exitApp(){
+fun exitApp() {
     println("Exiting...bye")
     exit(0)
 }
-
